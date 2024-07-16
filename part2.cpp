@@ -12,6 +12,13 @@ class Point {
         int z;
     public:
         //constructor
+
+        Point() {
+            this->x = 0;
+            this->y = 0;
+            this->z = 0; 
+        }
+
         Point(int x, int y, int z){
             this->x = x;
             this->y = y;
@@ -22,32 +29,37 @@ class Point {
             cout << "Point destructor executed\n";
         }
         //methods
-        int translate(int d, char axis){
+        int translate(int d, char axis) {
+
             cout << "translating point by " << d << " in " << axis << " axis...\n";
-            switch (axis){
+
+            if (typeid(d) != typeid(int))
+                return -2;
+
+            switch (axis) {
+
                 case 'x':
-                    this->x = this->x + d;
-                    this->display();
-                    return 0;
+                    this->x += d;
                     break;
+
                 case 'y':
-                    this->y = this->y + d;
-                    this->display();
-                    return 0;
+                    this->y +=+ d;
                     break;
+
                 case 'z':
-                    this->z = this->z + d;
-                    this->display();
-                    return 0;
+                    this->z += d;
                     break;
+
                 default:
                     cout << "point cannot be translated!\n";
                     return -1;
                     break;
             }
+            this->display();
+            return 0;
         }
     
-        void display(){
+        void display() {
             cout << "displaying point...\n";
             cout <<  "x: " << this->getX() << " y: " << this->getY() << " z: " << this->getZ() << "\n";
         }
@@ -81,23 +93,23 @@ class Triangle {
         Point* vertex_3;
     public:
         //constructor
-        Triangle(Point* vertex_1, Point* vertex_2, Point* vertex_3){
+        Triangle(Point* vertex_1, Point* vertex_2, Point* vertex_3) {
             this->vertex_1 = vertex_1;
             this->vertex_2 = vertex_2;
             this->vertex_3 = vertex_3;
         }
         //default constructor
-        Triangle(){
+        Triangle() {
             this->vertex_1 = nullptr;
             this->vertex_2 = nullptr;
             this->vertex_3 = nullptr;
         }
         //destructor
-        ~Triangle(){
+        ~Triangle() {
             cout << "Triangle destructor executed\n";
         }
         //methods
-        void displayPoints(){
+        void displayPoints() {
             cout << "displaying points...\n";
             if (this->vertex_1 == nullptr || this->vertex_2 == nullptr || this->vertex_3 == nullptr){
                 cout << "one or more vertex has null point values\n";
@@ -107,7 +119,7 @@ class Triangle {
                 cout << "x3: " << this->vertex_3->getX() << " y3: " << this->vertex_3->getY()<< " z3: " << this->vertex_3->getZ() << "\n"; 
             }        
         }
-        void translate(int d, char axis){
+        void translate(int d, char axis) {
             cout << "translating triangle coordinates by " << d << " in the " << axis << " axis...\n";
             if (this->vertex_1 == nullptr || this->vertex_2 == nullptr || this->vertex_3 == nullptr){
                 cout << "cannot translate! one or more vertex has null point values\n";
@@ -117,12 +129,12 @@ class Triangle {
                 this->vertex_3->translate(d,axis);
             }
         }
-        double calcArea(){
+        double calcArea() {
 
-             double area = 0;
+            double area = 0;
             cout << "calculating area...\n";
 
-            if (this->vertex_1 == nullptr || this->vertex_2 == nullptr || this->vertex_3 == nullptr){
+            if (this->vertex_1 == nullptr || this->vertex_2 == nullptr || this->vertex_3 == nullptr) {
                 cout << "one or more vertices are null, cannot calculate area\n";
                 return area;
             }
@@ -155,50 +167,123 @@ class Triangle {
             
             return area;
         }
+
+
+        double calcAreaTwo() {
+
+            double area =  0.5 * sqrt(pow((vertex_2->getY() - vertex_1->getY())*(vertex_3->getZ() - vertex_1->getZ()) - (vertex_2->getZ() - vertex_1->getZ())*(vertex_3->getY() - vertex_1->getY()), 2) +
+                                pow((vertex_2->getZ() - vertex_1->getZ())*(vertex_3->getX() - vertex_1->getX()) - (vertex_2->getX() - vertex_1->getX())*(vertex_3->getZ() - vertex_1->getZ()), 2) +
+                                pow((vertex_2->getX() - vertex_1->getX())*(vertex_3->getY() - vertex_1->getY()) - (vertex_2->getY() - vertex_1->getY())*(vertex_3->getX() - vertex_1->getX()), 2));
+            cout << "area is: " << area << "\n";
+            return area;
+        }
 };
 
 class Driver{
     public:
     static int main(){
-        cout << "\n ***Point***\n";
-        Point point1(3,2,3);
-        point1.display();
-        point1.setY(5);
-        point1.display();
-        cout << "return result of translation : " << point1.translate(5.5,'x') << "\n";
 
-        Point point2(1,2,3);
-        Point point3(9,8,7);
+        while (true) {
 
-        cout << "\n ***Triangle***\n";
+            if (menuOption() == 0) 
+                return 0; 
+                
 
-        //Triangle triangle;
-        Triangle triangle(&point1, &point2, &point3);
-        if (menuOption() == 1){
+            int myPoints[9];
+
+            cout << "Enter the nine integers you would like to use for the triangle points..." << endl;
+
+            for (int i = 0; i < 9; i++) {
+                while (true) {
+                    cout << "Enter integer number " << i + 1 << ": ";
+                    cin >> myPoints[i];
+
+                    if (cin.fail()) {
+                        cin.clear(); 
+                        cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+                        cout << "Invalid input. Please enter an integer." << endl;
+                    } else {
+                        break; 
+                    }
+                }
+            }
+
+            Point point1;
+            Point point2;
+            Point point3;
+
+            point1.setX(myPoints[0]);
+            point1.setY(myPoints[1]);
+            point1.setZ(myPoints[2]);
+
+            point2.setX(myPoints[3]);
+            point2.setY(myPoints[4]);
+            point2.setZ(myPoints[5]);
+
+            point3.setX(myPoints[6]);
+            point3.setY(myPoints[7]);
+            point3.setZ(myPoints[8]);
+
+
+            cout << "\n ***Triangle***\n";
+
+            Triangle triangle(&point1, &point2, &point3);
+
             triangle.displayPoints();
-        } else {
-            cout << "triangle coordinates not displayed\n";
-        }
-        triangle.translate(1,'x');
-        triangle.displayPoints();
-        triangle.calcArea();
+            triangle.calcAreaTwo();
 
+            
+            string choice;
+            while (true) {
+            
+                cout << "Would you like to translate the Triangle (y/n)?" << endl;
+                cin >> choice;
+
+                if (choice == "y" || choice == "Y") {
+                    int d;
+                    char axis;
+
+                    cout << "Enter amount to translate by: ";
+                    cin >> d;
+
+                    cout << "Enter axis (x, y or z): ";
+                    cin >> axis;
+
+                    triangle.translate(d, axis);
+
+                    triangle.displayPoints();
+                    triangle.calcAreaTwo();
+                }
+                else
+                    break;
+  
+            }
+
+        }
 
         return 0;
+       
     }
 
+
+
     static int menuOption(){
-        int response;
-        cout << "press 1 to display triangle coordinates on the screen. else press any other key\n";
-        cin >> response;
-        switch (response) {
-            case 1:
-                return 1;
-                break;
-            default:
+        
+        while (true) {
+            cout << "Triangle Program Menu \n";
+            cout << "1. Calculate Triangle \n";
+            cout << "2. Exit \n";
+
+            int choice;
+            cin >> choice;
+
+            if ((typeid(choice) != typeid(int)) || choice != 1) 
                 return 0;
-                break;
+            else
+                return 1;
+
         }
+
     }
 };
 
