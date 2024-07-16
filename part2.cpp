@@ -200,7 +200,7 @@ class Driver{
 
                     if (cin.fail()) {
                         cin.clear(); 
-                        cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+                        cin.ignore();
                         cout << "Invalid input. Please enter an integer." << endl;
                     } else {
                         break; 
