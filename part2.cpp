@@ -99,17 +99,34 @@ class Triangle {
         //methods
         void displayPoints(){
             cout << "displaying points...\n";
-            cout << "x1: " << this->vertex_1->getX() << " y1: " << this->vertex_1->getY()<< " z1: " << this->vertex_1->getZ() << "\n"; 
-            cout << "x2: " << this->vertex_2->getX() << " y2: " << this->vertex_2->getY()<< " z2: " << this->vertex_2->getZ() << "\n"; 
-            cout << "x3: " << this->vertex_3->getX() << " y3: " << this->vertex_3->getY()<< " z3: " << this->vertex_3->getZ() << "\n"; 
+            if (this->vertex_1 == nullptr || this->vertex_2 == nullptr || this->vertex_3 == nullptr){
+                cout << "one or more vertex has null point values\n";
+            } else {
+                cout << "x1: " << this->vertex_1->getX() << " y1: " << this->vertex_1->getY()<< " z1: " << this->vertex_1->getZ() << "\n"; 
+                cout << "x2: " << this->vertex_2->getX() << " y2: " << this->vertex_2->getY()<< " z2: " << this->vertex_2->getZ() << "\n"; 
+                cout << "x3: " << this->vertex_3->getX() << " y3: " << this->vertex_3->getY()<< " z3: " << this->vertex_3->getZ() << "\n"; 
+            }        
         }
         void translate(int d, char axis){
             cout << "translating triangle coordinates by " << d << " in the " << axis << " axis...\n";
-            this->vertex_1->translate(d,axis);
-            this->vertex_2->translate(d,axis);
-            this->vertex_3->translate(d,axis);
+            if (this->vertex_1 == nullptr || this->vertex_2 == nullptr || this->vertex_3 == nullptr){
+                cout << "cannot translate! one or more vertex has null point values\n";
+            } else {
+                this->vertex_1->translate(d,axis);
+                this->vertex_2->translate(d,axis);
+                this->vertex_3->translate(d,axis);
+            }
         }
         double calcArea(){
+
+             double area = 0;
+            cout << "calculating area...\n";
+
+            if (this->vertex_1 == nullptr || this->vertex_2 == nullptr || this->vertex_3 == nullptr){
+                cout << "one or more vertices are null, cannot calculate area\n";
+                return area;
+            }
+
             int x1 = this->vertex_1->getX();
             int y1 = this->vertex_1->getY();
             int z1 = this->vertex_1->getZ();
@@ -121,8 +138,7 @@ class Triangle {
             int x3 = this->vertex_3->getX();
             int y3 = this->vertex_3->getY();
             int z3 = this->vertex_3->getZ();
-            
-            cout << "calculating area...\n";
+
             cout << "x1: " << x1 << "\n";
             cout << "y2-y3: " << y2-y3 << "\n";
             cout << "x2: " << x2 << "\n";
@@ -133,8 +149,8 @@ class Triangle {
             cout << "area: " << "0.5 * abs(" << x1 << " * " << y2-y3 << " + " << x2 << " * " << y3-y1 << " + " << x3 << " * " << y1-y2 << ")\n";
             cout << "area: " <<  "0.5 * abs(" << x1*(y2-y3)+x2*(y3-y1)+x3*(y1-y2) << ")\n";
 
-            double area = (0.5)*abs(x1*(y2-y3)+x2*(y3-y1)+x3*(y1-y2));
-            
+            area = (0.5)*abs(x1*(y2-y3)+x2*(y3-y1)+x3*(y1-y2));
+
             cout << "the area of the triangle is: " << area << "\n";
             
             return area;
@@ -156,7 +172,8 @@ class Driver{
 
         cout << "\n ***Triangle***\n";
 
-        Triangle triangle(&point1,&point2,&point3);
+        //Triangle triangle;
+        Triangle triangle(&point1, &point2, &point3);
         if (menuOption() == 1){
             triangle.displayPoints();
         } else {
