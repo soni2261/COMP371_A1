@@ -32,8 +32,5 @@ int main(){
     initializeArray(array, size);
     printArray(array, size);
     deleteArray(array);
-
-    //cout << "array pointer: " << array;
-    //delete[] array;
     return 0;
 }
