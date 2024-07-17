@@ -2,6 +2,8 @@
 //Parker Harris-Bytautas 40207549
 #include <iostream>
 #include <cmath>
+#include <typeinfo>
+#include <limits>
 using namespace std;
 
 class Point {
@@ -33,8 +35,8 @@ class Point {
 
             cout << "translating point by " << d << " in " << axis << " axis...\n";
 
-            if (typeid(d) != typeid(int))
-                return -2;
+            // if (typeid(d) != typeid(int))
+            //     return -2;
 
             switch (axis) {
 
@@ -129,46 +131,6 @@ class Triangle {
                 this->vertex_3->translate(d,axis);
             }
         }
-        double calcArea() {
-
-            double area = 0;
-            cout << "calculating area...\n";
-
-            if (this->vertex_1 == nullptr || this->vertex_2 == nullptr || this->vertex_3 == nullptr) {
-                cout << "one or more vertices are null, cannot calculate area\n";
-                return area;
-            }
-
-            int x1 = this->vertex_1->getX();
-            int y1 = this->vertex_1->getY();
-            int z1 = this->vertex_1->getZ();
-
-            int x2 = this->vertex_2->getX();
-            int y2 = this->vertex_2->getY();
-            int z2 = this->vertex_2->getZ();
-
-            int x3 = this->vertex_3->getX();
-            int y3 = this->vertex_3->getY();
-            int z3 = this->vertex_3->getZ();
-
-            cout << "x1: " << x1 << "\n";
-            cout << "y2-y3: " << y2-y3 << "\n";
-            cout << "x2: " << x2 << "\n";
-            cout << "y3-y1: " << y3-y1 << "\n";
-            cout << "x3: " << x3 << "\n";
-            cout << "y1-y2: " << y1-y2 << "\n";
-            cout << "area: " << "0.5 * abs(x1*(y2-y3)+x2*(y3-y1)+x3*(y1-y2))\n";
-            cout << "area: " << "0.5 * abs(" << x1 << " * " << y2-y3 << " + " << x2 << " * " << y3-y1 << " + " << x3 << " * " << y1-y2 << ")\n";
-            cout << "area: " <<  "0.5 * abs(" << x1*(y2-y3)+x2*(y3-y1)+x3*(y1-y2) << ")\n";
-
-            area = (0.5)*abs(x1*(y2-y3)+x2*(y3-y1)+x3*(y1-y2));
-
-            cout << "the area of the triangle is: " << area << "\n";
-            
-            return area;
-        }
-
-
         double calcAreaTwo() {
 
             double area =  0.5 * sqrt(pow((vertex_2->getY() - vertex_1->getY())*(vertex_3->getZ() - vertex_1->getZ()) - (vertex_2->getZ() - vertex_1->getZ())*(vertex_3->getY() - vertex_1->getY()), 2) +
@@ -242,9 +204,17 @@ class Driver{
                 if (choice == "y" || choice == "Y") {
                     int d;
                     char axis;
+                    string input;
 
                     cout << "Enter amount to translate by: ";
-                    cin >> d;
+                    cin >> input;
+
+                    if (!isInteger(input)) {
+                        cout << "Invalid amount. Did not enter an integer.\n";
+                        return -2;
+                    } else {
+                        d = stoi(input);
+                    }
 
                     cout << "Enter axis (x, y or z): ";
                     cin >> axis;
@@ -263,6 +233,17 @@ class Driver{
 
         return 0;
        
+    }
+
+        // Returns true if s is a number else false
+    static bool isInteger(const string& s)
+    {
+        for (char c : s) {
+            if (!isdigit(c)) {
+                return false;
+            }
+        }
+        return true;
     }
 
 
