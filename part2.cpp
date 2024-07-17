@@ -235,7 +235,7 @@ class Driver{
        
     }
 
-        // Returns true if s is a number else false
+    // Returns true if s is an integer else false
     static bool isInteger(const string& s)
     {
         for (char c : s) {
